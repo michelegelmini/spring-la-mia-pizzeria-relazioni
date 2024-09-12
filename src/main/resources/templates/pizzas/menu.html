@@ -44,6 +44,7 @@
 										<img th:src="@{${pizza.picture}}" class="img-fluid" alt="Responsive image">
 									</a>
 									<h4>[[ ${pizza.price} ]]€</h4>
+									<h3>[[ ${pizza.discountedPrice}]]</h3>
 									<div class="d-flex justify-content-center">
 										<a class="btn btn-success m-1"
 											th:href="@{menu/edit/{id}(id=${pizza.id})}">Edit</a>
