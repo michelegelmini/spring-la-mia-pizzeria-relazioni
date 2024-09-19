@@ -46,7 +46,7 @@ public class PizzaController {
 		// li inserisco nel modello
 		model.addAttribute("menu", pizzaList);
 
-		return "/pizzas/menu";
+		return "/pizzas/index";
 	}
 
 	@GetMapping("/{id}")
