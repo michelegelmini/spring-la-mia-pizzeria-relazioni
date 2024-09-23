@@ -65,6 +65,16 @@
 								</ul>
 							</div>
 						</div>
+						<div class="form-check mb-3" th:each="ingredient : ${ingredients}" role="group" aria-label="Basic checkbox toggle button group">
+							
+								<input type="checkbox" class="form-check-input" th:id="|ingredient_${ingredient.id}|"
+									autocomplete="off" th:field="*{ingredients}" th:value="${ingredient.id}">
+								<label class="form-check-label" th:for="|ingredient_${ingredient.id}|"
+									th:text="${ingredient.name}"></label>
+							
+						</div>
+
+
 						<div class="mb-3 d-flex justify-content-around">
 							<input type="submit" class="btn btn-primary btn-lg" value="Create new pizza">
 							<input type="reset" class="btn btn-warning btn-lg" value="Reset fields">

@@ -1,7 +1,6 @@
 package org.lessons.java.pizzeria.model;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -83,6 +82,9 @@ public class SpecialOffer {
 		this.offerName = offerName;
 	}
 	
+	public Integer getPizzaId() {
+		return this.pizza.getId();
+	}
 	
 	
 	

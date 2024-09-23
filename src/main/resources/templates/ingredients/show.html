@@ -22,23 +22,7 @@
 								<div class="card-body">
 									<h5 class="card-title" th:text="*{name}"></h5>
 									<p class="card-text" th:text="*{description}"></p>
-									<p class="badge rounded-pill bg-primary" th:each="ingredient : *{ingredients}"
-										th:text="${ingredient.name}"></p>
-									<div>
-										<div class="container mb-4">
-										<th:block th:if="${pizza.getSpecialOffers() != null}">
-											<div class="badge rounded-pill bg-danger"
-												th:each="specialOffer : ${pizza.getSpecialOffers()}"
-												th:text="${specialOffer.offerName}">
-											</div>
-											<div class="badge rounded-pill bg-warning"
-												th:each="specialOffer : ${pizza.getSpecialOffers()}"
-												th:text="*{getFormattedDiscount()}">
-											</div>
-										</th:block>
-										</div>
-										<a th:href="@{/menu}" class="btn btn-primary">Back to menu</a>
-									</div>
+									<a th:href="@{/menu}" class="btn btn-primary">Back to menu</a>
 								</div>
 							</div>
 						</div>

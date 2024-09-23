@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.lessons.java.pizzeria.model.Pizza;
 import org.lessons.java.pizzeria.repo.PizzaRepository;
+import org.lessons.java.pizzeria.service.IngredientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
@@ -26,6 +27,9 @@ public class PizzaController {
 	@Autowired
 	// repository field con autowired per dipendency injection
 	private PizzaRepository repo;
+	
+	@Autowired
+	private IngredientService service;
 
 	@GetMapping
 	public String index(Model model, @RequestParam(name = "name", required = false) String name) {
@@ -35,11 +39,11 @@ public class PizzaController {
 
 		if (name != null && !name.isEmpty()) {
 			model.addAttribute("pizzaName", name);
-			pizzaList = repo.findByNameContainingIgnoreCaseOrderByNameAsc(name);
+			pizzaList = repo.findByNameContainingIgnoreCaseOrderByIdAsc(name);
 
 		} else {
 			// prendo i dati da consegnare a pizzas
-			pizzaList = repo.findAll(Sort.by("name"));
+			pizzaList = repo.findAll(Sort.by("id"));
 		}
 
 		// pizzaList = repo.findAll();
@@ -59,6 +63,7 @@ public class PizzaController {
 	@GetMapping("/create")
 	public String create(Model model) {
 		model.addAttribute("pizza", new Pizza());
+		model.addAttribute("ingredients", service.findAllSortedById());
 		return "/pizzas/create";
 	}
 	
@@ -67,6 +72,7 @@ public class PizzaController {
 	public String store(@Valid @ModelAttribute("pizza") Pizza formPizza, BindingResult bindingResult, RedirectAttributes attributes, Model model) {
 		
 		if (bindingResult.hasErrors()) {
+			model.addAttribute("ingredients", service.findAllSortedById());
 			return "/pizzas/create";
 		}
 		repo.save(formPizza);
@@ -88,6 +94,7 @@ public class PizzaController {
 		
 		//metodo rapido
 		model.addAttribute("pizza", repo.findById(id).get());
+		model.addAttribute("ingredients", service.findAllSortedById());
 		
 		//restituisco la view con il model inserito
 		return "pizzas/edit";
@@ -99,6 +106,7 @@ public class PizzaController {
 		
 		//se ci sono errori nel form, mostra gli errori
 		if (bindingResult.hasErrors()) {
+			model.addAttribute("ingredients", service.findAllSortedById());
 			return "/pizzas/edit";
 		}
 		//altrimenti salva la pizza nella repo
