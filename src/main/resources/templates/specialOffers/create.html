@@ -12,27 +12,13 @@
 		<main class="container">
 			<div class="row">
 				<div class="col-12">
-					<h1 class="py-4 mb-2 text-center">Create new Special Offer</h1>
+					<h1 class="py-4 mb-2 text-center">Create new Special Offer for <span th:text="${specialOffer.pizza.getName()}"></span></h1>
 
 					<form id="specialOffer-form" th:object="${specialOffer}" th:action="@{/specialOffers/create}"
 						method="POST">
-
-						<!--	<th:block th:if="${#fields.hasErrors()}">
-
-							<ul class="alert alert-danger p-3">
-								<li th:each="err : ${#fields.allErrors()}" th:text="${err}">
-								</li>
-							</ul>
-
-						</th:block> -->
-						<div class="mb-3">
-							<select class="form-select" aria-label="Default select example">
-							  <option selected>Open this select menu</option>
-							  <option th:each="pizza : ${menu}" th:value="${pizza.id}"></option>
-							  
-							</select>
-						</div>
-
+							
+						<input type="hidden" th:field="*{pizza}" id="pizza">
+				
 
 						<div class="mb-3">
 							<label for="exampleFormControlInput1" class="form-label">Starting Date</label>

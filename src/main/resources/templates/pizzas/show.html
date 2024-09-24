@@ -32,11 +32,14 @@
 												th:text="${specialOffer.offerName}">
 											</div>
 											<div class="badge rounded-pill bg-warning"
-												th:each="specialOffer : ${pizza.getSpecialOffers()}"
+												th:each="specialOffer : *{getSpecialOffers()}"
 												th:text="*{getFormattedDiscount()}">
 											</div>
 										</th:block>
 										</div>
+										<th:block th:unless="${pizza.getDiscountedPrice() != null}">
+										<a th:href="@{/menu/{id}/specialOffer(id=${pizza.id})}" class="btn btn-primary mb-3">Add Special Offer</a>
+										</th:block>
 										<a th:href="@{/menu}" class="btn btn-primary">Back to menu</a>
 									</div>
 								</div>

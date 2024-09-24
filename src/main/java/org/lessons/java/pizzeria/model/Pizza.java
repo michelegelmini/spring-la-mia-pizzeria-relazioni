@@ -49,7 +49,7 @@ public class Pizza {
 	@OneToMany(mappedBy = "pizza", cascade = {CascadeType.REMOVE})
 	private List<SpecialOffer> specialOffers;
 
-	@Formula("(SELECT menu.price - (menu.price * special_offers.discount) "
+	@Formula("(SELECT menu.price - (menu.price * special_offers.discount / 100) "
 			+ "from menu "
 			+ "INNER JOIN special_offers on menu.id = special_offers.pizza_id "
 			+ "WHERE special_offers.pizza_id = id)")
@@ -169,7 +169,7 @@ public class Pizza {
 		if(discountToFormat == null) {
 			return "";
 		} else {
-			return "-" + String.format("%.0f", discountToFormat * 100)  + "%";
+			return "-" + String.format("%.0f", discountToFormat)  + "%";
 		}
 		
 	}

@@ -29,12 +29,7 @@ public class SpecialOfferController {
 		return "/specialOffers/index";
 	}
 
-	// create
-	@GetMapping("/create")
-	public String create(Model model) {
-		model.addAttribute("specialOffer", new SpecialOffer());
-		return "/specialOffers/create";
-	}
+	
 
 	// Store
 	@PostMapping("/create")
@@ -47,20 +42,14 @@ public class SpecialOfferController {
 		service.create(formSpecialOffer);
 		attributes.addFlashAttribute("successMessage", formSpecialOffer.getOfferName() + " has been created!");
 
-		return "redirect:/pizzas/" + formSpecialOffer.getPizza().getId();
+		return "redirect:/menu/" + formSpecialOffer.getPizza().getId();
 	}
 
 	// edit
 	@GetMapping("/edit/{id}")
 	public String edit(@PathVariable("id") Integer id, Model model) {
 
-		// metodo lungo
-//				//trovo la pizza
-//				Pizza pizzaToEdit = repo.findById(id).get();
-//				//la inserisco nel model
-//				model.addAttribute("pizza", pizzaToEdit);
-
-		// metodo rapido
+	
 		model.addAttribute("specialOffer", service.findById(id));
 
 		// restituisco la view con il model inserito

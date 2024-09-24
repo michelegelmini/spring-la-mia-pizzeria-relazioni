@@ -1,10 +1,13 @@
 package org.lessons.java.pizzeria.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.lessons.java.pizzeria.model.Pizza;
+import org.lessons.java.pizzeria.model.SpecialOffer;
 import org.lessons.java.pizzeria.repo.PizzaRepository;
 import org.lessons.java.pizzeria.service.IngredientService;
+import org.lessons.java.pizzeria.service.PizzaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
@@ -26,10 +29,10 @@ public class PizzaController {
 
 	@Autowired
 	// repository field con autowired per dipendency injection
-	private PizzaRepository repo;
+	private PizzaService pizzaService;
 	
 	@Autowired
-	private IngredientService service;
+	private IngredientService ingredientService;
 
 	@GetMapping
 	public String index(Model model, @RequestParam(name = "name", required = false) String name) {
@@ -39,11 +42,11 @@ public class PizzaController {
 
 		if (name != null && !name.isEmpty()) {
 			model.addAttribute("pizzaName", name);
-			pizzaList = repo.findByNameContainingIgnoreCaseOrderByIdAsc(name);
+			pizzaList = pizzaService.findByName(name);
 
 		} else {
 			// prendo i dati da consegnare a pizzas
-			pizzaList = repo.findAll(Sort.by("id"));
+			pizzaList = pizzaService.findAllSortedById();
 		}
 
 		// pizzaList = repo.findAll();
@@ -55,7 +58,7 @@ public class PizzaController {
 
 	@GetMapping("/{id}")
 	public String show(@PathVariable("id") Integer pizzaId, Model model) {
-		model.addAttribute("pizza", repo.findById(pizzaId).get());
+		model.addAttribute("pizza", pizzaService.findById(pizzaId));
 		return "/pizzas/show";
 	}
 	
@@ -63,7 +66,7 @@ public class PizzaController {
 	@GetMapping("/create")
 	public String create(Model model) {
 		model.addAttribute("pizza", new Pizza());
-		model.addAttribute("ingredients", service.findAllSortedById());
+		model.addAttribute("ingredients", ingredientService.findAllSortedById());
 		return "/pizzas/create";
 	}
 	
@@ -72,10 +75,10 @@ public class PizzaController {
 	public String store(@Valid @ModelAttribute("pizza") Pizza formPizza, BindingResult bindingResult, RedirectAttributes attributes, Model model) {
 		
 		if (bindingResult.hasErrors()) {
-			model.addAttribute("ingredients", service.findAllSortedById());
+			model.addAttribute("ingredients", ingredientService.findAllSortedById());
 			return "/pizzas/create";
 		}
-		repo.save(formPizza);
+		pizzaService.create(formPizza);
 		attributes.addFlashAttribute("successMessage", formPizza.getName() + " has been created!");
 		
 		
@@ -93,8 +96,8 @@ public class PizzaController {
 //			model.addAttribute("pizza", pizzaToEdit);
 		
 		//metodo rapido
-		model.addAttribute("pizza", repo.findById(id).get());
-		model.addAttribute("ingredients", service.findAllSortedById());
+		model.addAttribute("pizza", pizzaService.findById(id));
+		model.addAttribute("ingredients", ingredientService.findAllSortedById());
 		
 		//restituisco la view con il model inserito
 		return "pizzas/edit";
@@ -106,11 +109,11 @@ public class PizzaController {
 		
 		//se ci sono errori nel form, mostra gli errori
 		if (bindingResult.hasErrors()) {
-			model.addAttribute("ingredients", service.findAllSortedById());
+			model.addAttribute("ingredients", ingredientService.findAllSortedById());
 			return "/pizzas/edit";
 		}
 		//altrimenti salva la pizza nella repo
-		repo.save(updatedFormPizza);	
+		pizzaService.update(updatedFormPizza);	
 		//ritorna al menu aggiornato
 		attributes.addFlashAttribute("successMessage", updatedFormPizza.getName() + " has been updated!");
 		
@@ -123,12 +126,25 @@ public class PizzaController {
 	public String delete(@PathVariable("id") Integer id, RedirectAttributes attributes) {
 		
 		//deleteById cerca ed elimina in un unico comando
-		repo.deleteById(id);
+		pizzaService.deleteById(id);
 		
 		attributes.addFlashAttribute("deletedMessage", "Pizza with id " + id + " has been deleted!");
 		
 		return "redirect:/menu";
 	}
+	
+	//apply special offer
+	@GetMapping("/{id}/specialOffer")
+	public String setSpecialOffer(@PathVariable("id") Integer id, Model model) {
+		SpecialOffer specialOffer = new SpecialOffer();
+		specialOffer.setStartingDate(LocalDate.now());
+		specialOffer.setPizza(pizzaService.findById(id));
+		model.addAttribute("specialOffer", specialOffer);
+		
+		
+		return "/specialOffers/create";
+	}
+	
 	
 
 }

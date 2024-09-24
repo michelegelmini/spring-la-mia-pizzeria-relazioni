@@ -24,11 +24,7 @@
 						</div>
 					</form>
 
-					<!--create pizza button-->
-					<div class="mb-3 d-flex ">
-						<a th:href="@{/specialOffers/create}" class=" ms-auto me-5 btn btn-lg btn-primary">Add new
-							special Offer</a>
-					</div>
+					
 
 					<!--alert after create/edit-->
 					<th:block th:if="${successMessage != null}">
@@ -57,8 +53,7 @@
 									<th>[[ *{getPizza().getName()}]]</th>
 									<th>
 
-										<a class="btn btn-success m-1"
-											th:href="@{specialOffers/edit/{id}(id=${specialOffer.id})}">Edit</a>
+									
 									</th>
 <th>
 									<!-- Button trigger modal -->
