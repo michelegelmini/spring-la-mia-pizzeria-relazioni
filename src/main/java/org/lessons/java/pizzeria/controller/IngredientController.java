@@ -1,5 +1,7 @@
 package org.lessons.java.pizzeria.controller;
 
+import java.util.List;
+
 import org.lessons.java.pizzeria.model.Ingredient;
 import org.lessons.java.pizzeria.model.Pizza;
 import org.lessons.java.pizzeria.service.IngredientService;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.validation.Valid;
@@ -24,10 +27,34 @@ public class IngredientController {
 	private IngredientService service;
 
 	@GetMapping()
-	public String index(Model model) {
-		model.addAttribute("ingredients", service.findAllSortedById());
+	public String index(Model model, @RequestParam(name = "name", required = false) String name) {
+		
+		model.addAttribute("ingredientName", name);
+		List<Ingredient> ingredientList;
+		
+		
+		if (name != null && !name.isEmpty()) {
+			model.addAttribute("pizzaName", name);
+			ingredientList = service.findByName(name);
+
+		} else {
+			// prendo i dati da consegnare a pizzas
+			ingredientList = service.findAllSortedById();
+		}
+		
+		model.addAttribute("ingredients", ingredientList);
+		
+		
+		
 		return "/ingredients/index";
 	}
+	
+	@GetMapping("/{id}")
+	public String show(@PathVariable("id") Integer ingredientId, Model model) {
+		model.addAttribute("ingredient", service.findById(ingredientId));
+		return "/ingredients/show";
+	}
+	
 
 	// create
 	@GetMapping("/create")

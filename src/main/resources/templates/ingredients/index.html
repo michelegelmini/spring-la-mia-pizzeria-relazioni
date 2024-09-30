@@ -14,7 +14,7 @@
 				<div class="col-12">
 					<h1>Ingredients</h1>
 					<!--search bar-->
-					<form th:action="@{/menu}" method="GET">
+					<form th:action="@{/ingredients}" method="GET">
 						<div class="input-group input-group-sm mb-3">
 							<span class="input-group-text" id="inputGroup-sizing-sm">Search for ingredient by
 								name</span>
@@ -42,55 +42,57 @@
 					<!--pizza table-->
 					<th:block th:if="${ingredients.size > 0}">
 
-						<div class="row align-items-center ">
-							<table class="table justify-content-apart table-striped align-middle  flex-grow-1">
+						<div class="row align-items-center d-flex  ">
+							<table class="table justify-content-between table-striped align-middle">
 								<tr>
-									<th>id</th>
-									<th>Name</th>
-									<th>Buttons</th>
-									<th></th>
+									<th class="col-sm-1">id</th>
+									<th class="col-lg-5">Name</th>
+									<th class="col-sm-3">Buttons</th>
+
 								</tr>
 								<tr th:each="ingredient : ${ingredients}" th:object="${ingredient}">
 									<th>[[ *{id} ]]</th>
 									<th class="flex-grow-1">[[ *{name} ]]</th>
 									<th>
 
+										<a class="btn btn-primary m-1"
+											th:href="@{ingredients/{id}(id=${ingredient.id})}">Show</a>
 										<a class="btn btn-success m-1"
 											th:href="@{ingredients/edit/{id}(id=${ingredient.id})}">Edit</a>
-									</th>
-<th>
-									<!-- Button trigger modal -->
-									<button type="button" class="btn btn-warning m-1" data-bs-toggle="modal"
-										th:data-bs-target="'#delete-modal-' + ${ingredient.id}">
-										Delete
-									</button>
-									<!-- Modal -->
-									<div class="modal fade" tabindex="-1" th:id="'delete-modal-' + ${ingredient.id}">
-										<div class="modal-dialog modal-dialog-centered">
-											<div class="modal-content">
-												<div class="modal-header">
-													<h5 class="modal-title">Confirm delete</h5>
-													<button type="button" class="btn-close" data-bs-dismiss="modal"
-														aria-label="Close"></button>
-												</div>
-												<div class="modal-body">
-													<p>Confirm delete of [[${ingredient.name}]]?</p>
-												</div>
-												<div class="modal-footer">
-													<button type="button" class="btn btn-secondary"
-														data-bs-dismiss="modal">Close</button>
-													<form class="d-inline-block"
-														th:action="@{ingredients/delete/{id}(id=${ingredient.id})}"
-														method="POST">
-														<button type="submit" class="btn btn-danger m-1">Delete</button>
-													</form>
+										<!-- Button trigger modal -->
+										<button type="button" class="btn btn-warning m-1" data-bs-toggle="modal"
+											th:data-bs-target="'#delete-modal-' + ${ingredient.id}">
+											Delete
+										</button>
+										<!-- Modal -->
+										<div class="modal fade" tabindex="-1"
+											th:id="'delete-modal-' + ${ingredient.id}">
+											<div class="modal-dialog modal-dialog-centered">
+												<div class="modal-content">
+													<div class="modal-header">
+														<h5 class="modal-title">Confirm delete</h5>
+														<button type="button" class="btn-close" data-bs-dismiss="modal"
+															aria-label="Close"></button>
+													</div>
+													<div class="modal-body">
+														<p>Confirm delete of [[${ingredient.name}]]?</p>
+													</div>
+													<div class="modal-footer">
+														<button type="button" class="btn btn-secondary"
+															data-bs-dismiss="modal">Close</button>
+														<form class="d-inline-block"
+															th:action="@{ingredients/delete/{id}(id=${ingredient.id})}"
+															method="POST">
+															<button type="submit"
+																class="btn btn-danger m-1">Delete</button>
+														</form>
+													</div>
 												</div>
 											</div>
 										</div>
-									</div>
-
-
 									</th>
+
+									
 								</tr>
 
 							</table>

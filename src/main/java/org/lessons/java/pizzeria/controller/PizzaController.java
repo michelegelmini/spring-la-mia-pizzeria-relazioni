@@ -5,11 +5,9 @@ import java.util.List;
 
 import org.lessons.java.pizzeria.model.Pizza;
 import org.lessons.java.pizzeria.model.SpecialOffer;
-import org.lessons.java.pizzeria.repo.PizzaRepository;
 import org.lessons.java.pizzeria.service.IngredientService;
 import org.lessons.java.pizzeria.service.PizzaService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;

@@ -18,6 +18,11 @@ public class IngredientService {
 		return repository.findAll(Sort.by("id"));
 	}
 	
+	public List<Ingredient> findByName(String name){
+		
+		return repository.findByNameContainingIgnoreCaseOrderByIdAsc(name);
+	}
+	
 	public Ingredient create(Ingredient ingredient) {
 		return repository.save(ingredient);
 	}

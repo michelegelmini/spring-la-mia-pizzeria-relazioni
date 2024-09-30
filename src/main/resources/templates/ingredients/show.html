@@ -12,17 +12,19 @@
 		<main class="container">
 			<div class="row">
 				<div class="col-12">
-					<th:block th:object="${pizza}">
+					<th:block th:object="${ingredient}">
 
 						<h1 class="text-center" th:text=*{name}></h1>
 						<!--single card-->
 						<div class="container d-flex justify-content-center">
 							<div class="card text-center" style="width: 18rem;">
-								<img class="card-img-top" th:src="@{*{picture}}" alt="Card image cap">
+								<h4 class="mt-2">Pizzas with [[*{name}]]</h4>
+								
 								<div class="card-body">
-									<h5 class="card-title" th:text="*{name}"></h5>
-									<p class="card-text" th:text="*{description}"></p>
-									<a th:href="@{/menu}" class="btn btn-primary">Back to menu</a>
+									<ul class="list-group mb-3">
+										<li class="list-group-item" th:each="pizza : ${ingredient.pizzas}" th:text="${pizza.name}"></li>
+									</ul>
+									<a th:href="@{/ingredients}" class="btn btn-primary">Back to ingredients</a>
 								</div>
 							</div>
 						</div>
