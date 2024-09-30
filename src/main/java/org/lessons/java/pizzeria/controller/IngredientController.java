@@ -1,6 +1,7 @@
 package org.lessons.java.pizzeria.controller;
 
 import org.lessons.java.pizzeria.model.Ingredient;
+import org.lessons.java.pizzeria.model.Pizza;
 import org.lessons.java.pizzeria.service.IngredientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -87,8 +88,14 @@ public class IngredientController {
 		@PostMapping("/delete/{id}")
 		public String delete(@PathVariable("id") Integer id, Ingredient ingredientToDelete, RedirectAttributes attributes) {
 			
+			Ingredient ingredient = service.findById(id);
+			
 			//deleteById cerca ed elimina in un unico comando
 			ingredientToDelete = service.findById(id);
+			
+			for (Pizza pizza : ingredient.getPizzas()) {
+				pizza.getIngredients().remove(ingredient);
+			}
 			
 			attributes.addFlashAttribute("deletedMessage", ingredientToDelete.getName() + " has been deleted!");
 			service.deleteById(id);

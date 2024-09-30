@@ -47,6 +47,7 @@
 									<th>Name</th>
 									<th>Price</th>
 									<th>Discount</th>
+									<th>Ingredients</th>
 
 									<th>Description</th>
 									<th>Buttons</th>
@@ -59,10 +60,13 @@
 											th:text="${pizza.getFormattedDiscount()}"></span></th>
 									<th>
 										[[*{getFormattedDiscountedPrice()}]]</th>
+									<th>
+										<p class="badge rounded-pill bg-primary" th:each="ingredient : *{ingredients}"
+											th:text="${ingredient.name}">
+											</p></th>
 									<th>[[ *{description} ]]</th>
 									<th>
-										<a class="btn btn-primary m-1"
-											th:href="@{menu/{id}(id=${pizza.id})}">Show</a>
+										<a class="btn btn-primary m-1" th:href="@{menu/{id}(id=${pizza.id})}">Show</a>
 
 										<a class="btn btn-success m-1"
 											th:href="@{menu/edit/{id}(id=${pizza.id})}">Edit</a>
